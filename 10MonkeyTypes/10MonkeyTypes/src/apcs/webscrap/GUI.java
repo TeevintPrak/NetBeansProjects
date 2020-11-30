@@ -6,12 +6,16 @@
 package apcs.webscrap;
 
 import static apcs.webscrap.TenMonkeyTypes.getLang;
-import static apcs.webscrap.TenMonkeyTypes.getTyperInfo;
+//import static apcs.webscrap.TenMonkeyTypes.getTyperInfo;
 import static apcs.webscrap.TenMonkeyTypes.getUsername;
-import static apcs.webscrap.TenMonkeyTypes.getWPM;
+import java.awt.event.KeyEvent;
+import java.time.LocalTime;
+//import static apcs.webscrap.TenMonkeyTypes.getWPM;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 
 /**
  *
@@ -35,25 +39,414 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        linkBox = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        rankBox = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        wordsDisplay = new javax.swing.JTextArea();
+        typingArea = new javax.swing.JTextField();
+        timeBox = new javax.swing.JTextField();
+        wrongWordsBox = new javax.swing.JTextField();
+        wpmBox = new javax.swing.JTextField();
+        totalWordsBox = new javax.swing.JTextField();
+        correctWordsBox = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("10 Monkey Types");
+        setForeground(java.awt.Color.black);
+        setMaximumSize(new java.awt.Dimension(1174, 658));
+        setMinimumSize(new java.awt.Dimension(1174, 658));
+        setSize(new java.awt.Dimension(1174, 658));
+
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel1.setMaximumSize(new java.awt.Dimension(1174, 658));
+        jPanel1.setMinimumSize(new java.awt.Dimension(1174, 658));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1174, 658));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Trebuchet MS", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("10 Monkey Types");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 10, -1, 46));
+
+        linkBox.setBackground(new java.awt.Color(51, 51, 51));
+        linkBox.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        linkBox.setForeground(new java.awt.Color(255, 117, 58));
+        linkBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        linkBox.setText("Link");
+        linkBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                linkBoxActionPerformed(evt);
+            }
+        });
+        linkBox.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                linkBoxKeyPressed(evt);
+            }
+        });
+        jPanel1.add(linkBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 590, 650, 40));
+
+        jLabel2.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel2.setText("Wrong Words:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 530, 160, 30));
+
+        jLabel3.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel3.setText("Created using NetBeans");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 610, 180, 30));
+
+        jLabel4.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel4.setText("Correct Words:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 480, 170, 30));
+
+        jLabel5.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel5.setText("WPM:");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 430, 90, 30));
+
+        jLabel6.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel6.setText("Time: ");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 480, 90, 30));
+
+        jLabel8.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel8.setText("Rank:");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 530, 90, 30));
+
+        jLabel9.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel9.setText("Version 1.0");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 580, 180, 30));
+
+        jLabel10.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel10.setText("Developed by: Teevint Prak");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 580, 180, 30));
+
+        jLabel11.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel11.setText("Code available on GitHub");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 610, 180, 30));
+
+        rankBox.setEditable(false);
+        rankBox.setBackground(new java.awt.Color(51, 51, 51));
+        rankBox.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        rankBox.setForeground(new java.awt.Color(255, 117, 58));
+        rankBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        rankBox.setToolTipText("");
+        rankBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rankBoxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(rankBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 530, 170, 40));
+
+        jLabel12.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel12.setText("Words:");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 430, 90, 30));
+
+        wordsDisplay.setEditable(false);
+        wordsDisplay.setBackground(new java.awt.Color(51, 51, 51));
+        wordsDisplay.setColumns(20);
+        wordsDisplay.setFont(new java.awt.Font("Trebuchet MS", 0, 18)); // NOI18N
+        wordsDisplay.setForeground(new java.awt.Color(204, 102, 0));
+        wordsDisplay.setLineWrap(true);
+        wordsDisplay.setRows(5);
+        jScrollPane2.setViewportView(wordsDisplay);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 650, 260));
+
+        typingArea.setBackground(new java.awt.Color(51, 51, 51));
+        typingArea.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        typingArea.setForeground(new java.awt.Color(255, 117, 58));
+        typingArea.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        typingArea.setText("Type Here");
+        typingArea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typingAreaActionPerformed(evt);
+            }
+        });
+        typingArea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                typingAreaKeyPressed(evt);
+            }
+        });
+        jPanel1.add(typingArea, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 340, 650, 70));
+
+        timeBox.setEditable(false);
+        timeBox.setBackground(new java.awt.Color(51, 51, 51));
+        timeBox.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        timeBox.setForeground(new java.awt.Color(255, 117, 58));
+        timeBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        timeBox.setToolTipText("");
+        timeBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeBoxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(timeBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 480, 170, 40));
+
+        wrongWordsBox.setEditable(false);
+        wrongWordsBox.setBackground(new java.awt.Color(51, 51, 51));
+        wrongWordsBox.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        wrongWordsBox.setForeground(new java.awt.Color(255, 117, 58));
+        wrongWordsBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        wrongWordsBox.setToolTipText("");
+        wrongWordsBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wrongWordsBoxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(wrongWordsBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 530, 170, 40));
+
+        wpmBox.setEditable(false);
+        wpmBox.setBackground(new java.awt.Color(51, 51, 51));
+        wpmBox.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        wpmBox.setForeground(new java.awt.Color(255, 117, 58));
+        wpmBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        wpmBox.setToolTipText("");
+        wpmBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wpmBoxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(wpmBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 430, 170, 40));
+
+        totalWordsBox.setEditable(false);
+        totalWordsBox.setBackground(new java.awt.Color(51, 51, 51));
+        totalWordsBox.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        totalWordsBox.setForeground(new java.awt.Color(255, 117, 58));
+        totalWordsBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        totalWordsBox.setToolTipText("");
+        totalWordsBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                totalWordsBoxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(totalWordsBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 430, 170, 40));
+
+        correctWordsBox.setEditable(false);
+        correctWordsBox.setBackground(new java.awt.Color(51, 51, 51));
+        correctWordsBox.setFont(new java.awt.Font("Trebuchet MS", 0, 24)); // NOI18N
+        correctWordsBox.setForeground(new java.awt.Color(255, 117, 58));
+        correctWordsBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        correctWordsBox.setToolTipText("");
+        correctWordsBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                correctWordsBoxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(correctWordsBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 480, 170, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1289, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1174, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 605, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void linkBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkBoxActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_linkBoxActionPerformed
+
+    private void rankBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rankBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rankBoxActionPerformed
+
+    private void typingAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typingAreaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typingAreaActionPerformed
+
+    private void timeBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_timeBoxActionPerformed
+
+    private void wrongWordsBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wrongWordsBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_wrongWordsBoxActionPerformed
+
+    private void wpmBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wpmBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_wpmBoxActionPerformed
+
+    private void totalWordsBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalWordsBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_totalWordsBoxActionPerformed
+
+    private void correctWordsBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correctWordsBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_correctWordsBoxActionPerformed
+
+    private void linkBoxKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_linkBoxKeyPressed
+        
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            String text = linkBox.getText().trim();
+            String urlHTTP = "https://10fastfingers.com/";
+            if(!(text.equals(" ") || text.equals("")) && (text.contains(urlHTTP)))
+            {
+                backEnd.setUp(text);
+                String testingWords = backEnd.getWords();
+                wordCount = backEnd.getWordCount();
+                wordsDisplay.append(testingWords);
+            }
+        }
+        
+    }//GEN-LAST:event_linkBoxKeyPressed
+   
+   private void startTimer()
+   {
+       if(timer)
+       {
+            start = LocalTime.now().toNanoOfDay();
+            System.out.println(Double.toString(start) + " is start time");
+       }
+       else if(!timer)
+        {
+            double end = LocalTime.now().toNanoOfDay();
+            System.out.println(Double.toString(end) + " is end time");
+            double elaspedTimeInSeconds = (end - start)/1000000000.0;
+            System.out.println(Double.toString(elaspedTimeInSeconds) + " is elaspedTime");
+            showResults(elaspedTimeInSeconds);
+        }
+   }
+   
+   private void showResults(double elaspedTimeInSeconds)
+   {
+       int[] results = backEnd.evaluate(typedWords, elaspedTimeInSeconds);
+       int wpm = results[0];
+       int totalWords = results[1];
+       int correctWords = results[2];
+       int wrongWords = results[3];
+       String rank = getRank(wpm);
+       
+       wpmBox.setText(Integer.toString(wpm));
+       totalWordsBox.setText(Integer.toString(totalWords));
+       correctWordsBox.setText(Integer.toString(correctWords));
+       wrongWordsBox.setText(Integer.toString(correctWords));
+       rankBox.setText(rank);
+       
+   }
+   
+   private String getRank(int wpm)
+   {
+       String rank = "";
+       if(wpm >= 130)
+       {
+           rank = "Grand Master";
+       }
+       else if(wpm >= 110)
+       {
+           rank = "Master";
+       }
+       else if(wpm >= 100)
+       {
+           rank = "Diamond";
+       }
+       else if(wpm >= 90)
+       {
+           rank = "Platinum";
+       }
+       else if(wpm >= 80)
+       {
+           rank = "Gold II";
+       }
+       else if(wpm >= 70)
+       {
+           rank = "Gold I";
+       }
+       else if(wpm >= 60)
+       {
+           rank = "Silver III";
+       }
+       else if(wpm >= 50)
+       {
+           rank = "Silver II";
+       }
+       else if(wpm >= 40)
+       {
+           rank = "Silver I";
+       }
+       else if(wpm >= 35)
+       {
+           rank = "Bronze III";
+       }
+       else if(wpm >= 30)
+       {
+           rank = "Bronze II";
+       }
+       else 
+       {
+           rank = "Bronze I";
+       }
+       
+           
+       return rank;
+   }
+    
+    private void typingAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_typingAreaKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_SPACE && !firstWord)
+        {
+            timer = true;
+            startTimer();
+            System.out.println("Start timer");
+            firstWord = true;
+        }
+        if(evt.getKeyCode() == KeyEvent.VK_SPACE)
+        {
+            String typedWord = typingArea.getText().trim();
+            if(typedWords.size() == wordCount)
+            {
+                timer = false;
+                startTimer();
+            }
+            if(!typingArea.getText().equals(""))
+            {
+                typedWords.add(typedWord);
+            }
+            typingArea.setText("");
+        }
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            timer = false;
+            startTimer();
+        }
+    }//GEN-LAST:event_typingAreaKeyPressed
+
     /**
      * @param args the command line arguments
      */
+    private ArrayList<String> typedWords = new ArrayList<String>();
+    private int wordCount = 0;    private boolean firstWord = false;
+    private boolean timer = false;
+    private TenMonkeyTypes backEnd = new TenMonkeyTypes();
+    private double start = 0;
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -87,5 +480,27 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField correctWordsBox;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField linkBox;
+    private javax.swing.JTextField rankBox;
+    private javax.swing.JTextField timeBox;
+    private javax.swing.JTextField totalWordsBox;
+    private javax.swing.JTextField typingArea;
+    private javax.swing.JTextArea wordsDisplay;
+    private javax.swing.JTextField wpmBox;
+    private javax.swing.JTextField wrongWordsBox;
     // End of variables declaration//GEN-END:variables
 }

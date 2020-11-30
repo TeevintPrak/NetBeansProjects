@@ -21,7 +21,10 @@ public class TenMonkeyTypes {
     /**
      * @param args the command line arguments
      */
-    private String typingHTML;
+    
+    private String typingHTML; //This is the variable that stores the source code of the website
+    private ArrayList<String> wordBank = new ArrayList(); //The text scraped from the website will be stored in this list
+    
     public static void main(String[] args) 
     {
         // TODO code application logic here
@@ -37,16 +40,29 @@ public class TenMonkeyTypes {
     
     public void setUp(String website)
     {
-        ArrayList<String> wordBank = new ArrayList();
+        
         setHTML(website);
         wordBank = getText(wordBank, website);
-        
-        print(wordBank);
+    }
+    
+    public String getWords()
+    {
+        StringBuilder sb = new StringBuilder();
+        for (String s : wordBank)
+        {
+            sb.append(s);
+            sb.append(" ");
+        }
+       return sb.toString();
+    }
+    
+    public int getWordCount()
+    {
+        return wordBank.size();
     }
     
     public ArrayList getText(ArrayList<String> wordBank, String website)
     {
-        wordBank.add(getFirstWord());
         for(int i = 0; i < getWordCount(website, typingHTML); i++)
         {
             String key = "<span wordnr=\""+i+"\">";
@@ -59,7 +75,7 @@ public class TenMonkeyTypes {
             {
                 String key2 = "<span wordnr=\""+(getWordCount(website,typingHTML))+"\">";
                 int keyLocation2 = typingHTML.indexOf(key2) + key2.length();
-                int endLocation2 = typingHTML.indexOf(".&",keyLocation2);
+                int endLocation2 = typingHTML.indexOf(".",keyLocation2);
                 word = typingHTML.substring(keyLocation2, endLocation2);
                 System.out.println(word + " " + getWordCount(website,typingHTML));
                 wordBank.add(word);
@@ -68,16 +84,6 @@ public class TenMonkeyTypes {
         return wordBank;
     }
     
-    public String getFirstWord()
-    {
-        String leftKey = "<div class=\"workspace\" id=\"row1\"><span class=\"current\"></span><span wordnr=\"0\">";
-        int leftKeyIndex = (typingHTML.indexOf(leftKey) + leftKey.length());
-        String rightKey = "</span> <span wordnr=\"1\">";
-        int rightKeyIndex = typingHTML.indexOf(rightKey);
-        String firstWord = typingHTML.substring(leftKeyIndex, rightKeyIndex);
-        //System.out.println("This is first word" + firstWord);
-        return firstWord;
-    }
     
     public void type(ArrayList<String> wordBank)
     { 
@@ -103,34 +109,36 @@ public class TenMonkeyTypes {
         {
             
         }
-        evaluate(typedWords, wordBank, elaspedTimeInSeconds);
-    }   
-    
-    public void evaluate(String typedWords, ArrayList<String> wordBank, double elapsedTimeInSeconds)
+        
+    }
+ 
+    public int[] evaluate(ArrayList<String> typedWords, double elapsedTimeInSeconds)
     {
-        String[] inputWordArray = typedWords.split(" ");
-        int wrongMatch = 0;
+        int wrongWords = 0;
         int wordsTyped = 0;
-        for(int i = 0; i < inputWordArray.length; i++)
+        
+        for(int i = 1; i < typedWords.size(); i++)
         {
-            if(inputWordArray[i].equals(wordBank.get(i+1)))
+            if(typedWords.get(i).equals(wordBank.get(i)))
             {
                 wordsTyped++;
-                System.out.println(inputWordArray[i] + " and " + wordBank.get(i+1));
+                System.out.println(typedWords.get(i) + " and " + wordBank.get(i) + " true Wrong Words: " + wrongWords);
             }
             else
             {
-                wrongMatch++;
+                wrongWords++;
                 wordsTyped++;
-                System.out.println(inputWordArray[i] + " and " + wordBank.get(i+1));
+                System.out.println(typedWords.get(i) + " and " + wordBank.get(i) + "false Wrong Words: " + wrongWords);
             }
         }
-        int correctWords = wordsTyped - wrongMatch;
+        
+        int correctWords = wordsTyped - wrongWords;
+        System.out.println(Double.toString(elapsedTimeInSeconds));
         int wpm = (int)((correctWords/elapsedTimeInSeconds)*60);
         
-        System.out.print(wordsTyped + " words in " + elapsedTimeInSeconds);
-        System.out.print(wpm + " WPM");
-        System.out.print("Words Typed: " + wordsTyped + "| Correct Words: " + correctWords + "| Wrong Words: " + wrongMatch);
+        //index 0 (WPM), 1 (wordsTyped), 2 (correctWords), 3 (wrongWords)
+        int[] results = {wpm, wordsTyped, correctWords, wrongWords};
+        return results;
     }
     
     public void print(ArrayList<String> wordBank)
@@ -235,7 +243,4 @@ public class TenMonkeyTypes {
         return result.toString(); 
 
     } 
-
- 
-    
 }
