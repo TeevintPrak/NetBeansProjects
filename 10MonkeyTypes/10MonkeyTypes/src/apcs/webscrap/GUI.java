@@ -352,6 +352,7 @@ public class GUI extends javax.swing.JFrame {
        int totalWords = results[1];
        int correctWords = results[2];
        int wrongWords = results[3];
+       int time = results[4];
        String rank = getRank(wpm);
        
        wpmBox.setText(Integer.toString(wpm));
@@ -359,6 +360,7 @@ public class GUI extends javax.swing.JFrame {
        correctWordsBox.setText(Integer.toString(correctWords));
        wrongWordsBox.setText(Integer.toString(wrongWords));
        rankBox.setText(rank);
+       timeBox.setText(Integer.toString(time));
        
    }
    

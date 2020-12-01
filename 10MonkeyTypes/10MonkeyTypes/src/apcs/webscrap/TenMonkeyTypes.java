@@ -98,7 +98,7 @@ public class TenMonkeyTypes {
         int correctWords = wordsTyped - wrongWords;
         System.out.println(totalChar);
         int wpm = (int)(((totalChar/avgChar)/elapsedTimeInSeconds)*60);
-        int[] results = {wpm, wordsTyped, correctWords, wrongWords};
+        int[] results = {wpm, wordsTyped, correctWords, wrongWords, (int)elapsedTimeInSeconds};
         return results;
     }
 
