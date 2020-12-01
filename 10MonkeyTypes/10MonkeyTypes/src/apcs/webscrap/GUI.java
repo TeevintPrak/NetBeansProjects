@@ -309,8 +309,14 @@ public class GUI extends javax.swing.JFrame {
             String urlHTTP = "https://10fastfingers.com/";
             if(!(text.equals(" ") || text.equals("")) && (text.contains(urlHTTP)))
             {
+                backEnd.resetWordBank();
+                typedWords.clear();
+                timer = false;
+                firstWord = false;
+                start = 0;
+                wordsDisplay.setText("");
                 backEnd.setUp(text);
-                String testingWords = backEnd.getWords();
+                String testingWords = backEnd.printWords();
                 wordCount = backEnd.getWordCount();
                 wordsDisplay.append(testingWords);
             }
@@ -322,16 +328,20 @@ public class GUI extends javax.swing.JFrame {
    {
        if(timer)
        {
+            start = 0;
             start = LocalTime.now().toNanoOfDay();
             System.out.println(Double.toString(start) + " is start time");
        }
        else if(!timer)
         {
-            double end = LocalTime.now().toNanoOfDay();
+            double end = 0;
+            end = LocalTime.now().toNanoOfDay();
             System.out.println(Double.toString(end) + " is end time");
             double elaspedTimeInSeconds = (end - start)/1000000000.0;
             System.out.println(Double.toString(elaspedTimeInSeconds) + " is elaspedTime");
             showResults(elaspedTimeInSeconds);
+            start = 0;
+            end = 0;
         }
    }
    
@@ -347,7 +357,7 @@ public class GUI extends javax.swing.JFrame {
        wpmBox.setText(Integer.toString(wpm));
        totalWordsBox.setText(Integer.toString(totalWords));
        correctWordsBox.setText(Integer.toString(correctWords));
-       wrongWordsBox.setText(Integer.toString(correctWords));
+       wrongWordsBox.setText(Integer.toString(wrongWords));
        rankBox.setText(rank);
        
    }

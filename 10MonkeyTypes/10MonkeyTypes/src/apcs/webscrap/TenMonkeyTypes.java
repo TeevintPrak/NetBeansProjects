@@ -27,128 +27,80 @@ public class TenMonkeyTypes {
     
     public static void main(String[] args) 
     {
-        // TODO code application logic here
-       TenMonkeyTypes app = new TenMonkeyTypes();
-       String website = "https://10fastfingers.com/text/239385-VS-Freddie";
-       app.setUp(website);
+        
     }
     
-    public void setHTML(String link)
+    public void resetWordBank() //Clears the previous word bank for a new one.
+    {
+        wordBank.clear();
+    }
+    
+    public void setHTML(String link) //A Setter to input the website link and convert to HTML and assign it to the variable
     {
         this.typingHTML = download(link);
     }
     
-    public void setUp(String website)
+    public void setUp(String website) //This is where everything starts off
     {
-        
-        setHTML(website);
-        wordBank = getText(wordBank, website);
+        setHTML(website); //Get html source code
+        wordBank = getText(wordBank, website); //Assign all the words scraped to an arrayList
     }
     
-    public String getWords()
+    public String printWords() //To re-organize all the text into proper format.
     {
-        StringBuilder sb = new StringBuilder();
-        for (String s : wordBank)
+        StringBuilder sb = new StringBuilder(); //Creates string builder class 
+        for (String s : wordBank) //formats every word and add a space between each one
         {
             sb.append(s);
             sb.append(" ");
         }
-       return sb.toString();
+       return sb.toString(); //Return the text
     }
     
-    public int getWordCount()
+    public int getWordCount() //Get the wordCount of the text by getting size of ArrayList
     {
         return wordBank.size();
     }
     
-    public ArrayList getText(ArrayList<String> wordBank, String website)
+    public ArrayList getText(ArrayList<String> wordBank, String website) //Scrapes the text off the website 
     {
-        for(int i = 0; i < getWordCount(website, typingHTML); i++)
+        for(int i = 0; i <= getWordCount(website, typingHTML); i++)  //The words in the text is stored with a different key in the source code, so i need a loop
         {
-            String key = "<span wordnr=\""+i+"\">";
-            int keyLocation = typingHTML.indexOf(key) + key.length();
-            int endLocation = typingHTML.indexOf("<",keyLocation);
-            String word = typingHTML.substring(keyLocation, endLocation);
-            System.out.println(word + " " + i);
+            String key = "<span wordnr=\""+i+"\">"; //It is organize as such that it put each words in order from 0 - wordCount
+            int keyLocation = typingHTML.indexOf(key) + key.length(); //Gets the location of the header to the end of the header
+            int endLocation = typingHTML.indexOf("<",keyLocation); //Gets the location of the ending footer after the value
+            String word = typingHTML.substring(keyLocation, endLocation); //Uses substring to get the value between the header index and footer index
             wordBank.add(word);
-            if((i+1) == getWordCount(website,typingHTML))
-            {
-                String key2 = "<span wordnr=\""+(getWordCount(website,typingHTML))+"\">";
-                int keyLocation2 = typingHTML.indexOf(key2) + key2.length();
-                int endLocation2 = typingHTML.indexOf(".",keyLocation2);
-                word = typingHTML.substring(keyLocation2, endLocation2);
-                System.out.println(word + " " + getWordCount(website,typingHTML));
-                wordBank.add(word);
-            }
         }
         return wordBank;
-    }
-    
-    
-    public void type(ArrayList<String> wordBank)
-    { 
-        String typedWords = "";
-        double elaspedTimeInSeconds = 0.0;
-        try
-        {
-            System.out.println(1);
-            TimeUnit.SECONDS.sleep(1);
-            System.out.println(2);
-            TimeUnit.SECONDS.sleep(1);
-            System.out.println(3);
-            TimeUnit.SECONDS.sleep(1);
-            
-            double start = LocalTime.now().toNanoOfDay(); 
-            Scanner input = new Scanner(System.in);
-            System.out.println("");
-            typedWords = input.nextLine();
-            double end = LocalTime.now().toNanoOfDay(); 
-            elaspedTimeInSeconds = (end - start)/1000000000.0;
-        }
-        catch(InterruptedException e)
-        {
-            
-        }
-        
     }
  
     public int[] evaluate(ArrayList<String> typedWords, double elapsedTimeInSeconds)
     {
         int wrongWords = 0;
         int wordsTyped = 0;
-        
+        double totalChar = 0;
+        final double avgChar = 3.5;
         for(int i = 1; i < typedWords.size(); i++)
         {
             if(typedWords.get(i).equals(wordBank.get(i)))
             {
                 wordsTyped++;
-                System.out.println(typedWords.get(i) + " and " + wordBank.get(i) + " true Wrong Words: " + wrongWords);
+                totalChar += typedWords.get(i).length();
+                System.out.println(totalChar);
             }
             else
             {
                 wrongWords++;
                 wordsTyped++;
-                System.out.println(typedWords.get(i) + " and " + wordBank.get(i) + "false Wrong Words: " + wrongWords);
             }
         }
-        
         int correctWords = wordsTyped - wrongWords;
-        System.out.println(Double.toString(elapsedTimeInSeconds));
-        int wpm = (int)((correctWords/elapsedTimeInSeconds)*60);
-        
-        //index 0 (WPM), 1 (wordsTyped), 2 (correctWords), 3 (wrongWords)
+        System.out.println(totalChar);
+        int wpm = (int)(((totalChar/avgChar)/elapsedTimeInSeconds)*60);
         int[] results = {wpm, wordsTyped, correctWords, wrongWords};
         return results;
     }
-    
-    public void print(ArrayList<String> wordBank)
-    {
-        for(int i = 0;i < wordBank.size(); i++)
-        {
-            System.out.println(wordBank.get(i));
-        }
-    }
-    
 
     public int getWordCount(String website, String html)
     {
