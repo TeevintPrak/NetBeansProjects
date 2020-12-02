@@ -57,6 +57,7 @@ public class GUI extends javax.swing.JFrame {
         wpmBox = new javax.swing.JTextField();
         totalWordsBox = new javax.swing.JTextField();
         correctWordsBox = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("10 Monkey Types");
@@ -136,8 +137,8 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 117, 58));
-        jLabel11.setText("Code available on GitHub");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 610, 180, 30));
+        jLabel11.setText("https://github.com/TeevintPrak");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 640, 180, 30));
 
         rankBox.setEditable(false);
         rankBox.setBackground(new java.awt.Color(51, 51, 51));
@@ -249,6 +250,11 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         jPanel1.add(correctWordsBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 480, 170, 40));
+
+        jLabel13.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 117, 58));
+        jLabel13.setText("Code available on GitHub:");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 610, 180, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -458,6 +464,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
