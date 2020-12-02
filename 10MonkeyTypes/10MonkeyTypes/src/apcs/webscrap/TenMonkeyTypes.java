@@ -7,11 +7,8 @@ package apcs.webscrap;
 
 import java.io.*; 
 import java.net.URL; 
-import java.net.URLConnection; 
-import java.time.LocalTime;
-import java.util.Scanner;
+import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 /**
  *
  * @author teevint.prak
@@ -30,26 +27,30 @@ public class TenMonkeyTypes {
         
     }
     
-    public void resetWordBank() //Clears the previous word bank for a new one.
-    {
-        wordBank.clear();
-    }
-    
-    public void setHTML(String link) //A Setter to input the website link and convert to HTML and assign it to the variable
-    {
-        this.typingHTML = download(link);
-    }
-    
-    public void setUp(String website) //This is where everything starts off
+    //This is where everything starts off
+    public void setUp(String website) 
     {
         setHTML(website); //Get html source code
         wordBank = getText(wordBank, website); //Assign all the words scraped to an arrayList
     }
     
-    public String printWords() //To re-organize all the text into proper format.
+    //Clears the previous word bank for a new one.
+    public void resetWordBank() 
+    {
+        wordBank.clear();
+    }
+    
+     //A Setter to input the website link and convert to HTML and assign it to the variable
+    public void setHTML(String link)
+    {
+        this.typingHTML = download(link);
+    }
+    
+    //To re-organize all the text into proper format.
+    public String printWords() 
     {
         StringBuilder sb = new StringBuilder(); //Creates string builder class 
-        for (String s : wordBank) //formats every word and add a space between each one
+        for(String s : wordBank) //formats every word and add a space between each one
         {
             sb.append(s);
             sb.append(" ");
@@ -57,37 +58,40 @@ public class TenMonkeyTypes {
        return sb.toString(); //Return the text
     }
     
-    public int getWordCount() //Get the wordCount of the text by getting size of ArrayList
+    //Get the wordCount of the text by getting size of ArrayList
+    public int getWordCount() 
     {
         return wordBank.size();
     }
     
-    public ArrayList getText(ArrayList<String> wordBank, String website) //Scrapes the text off the website 
+    //Scrapes the text off the website 
+    public ArrayList getText(ArrayList<String> wordBank, String website) 
     {
         for(int i = 0; i <= getWordCount(website, typingHTML); i++)  //The words in the text is stored with a different key in the source code, so i need a loop
         {
-            String key = "<span wordnr=\""+i+"\">"; //It is organize as such that it put each words in order from 0 - wordCount
-            int keyLocation = typingHTML.indexOf(key) + key.length(); //Gets the location of the header to the end of the header
-            int endLocation = typingHTML.indexOf("<",keyLocation); //Gets the location of the ending footer after the value
+            String key = "<span wordnr=\""+i+"\">"; //The key in the website is organized from 0-max, so we just replicate here with a loop as "i"
+            int keyLocation = typingHTML.indexOf(key) + key.length(); //Gets the location at the end of the header
+            int endLocation = typingHTML.indexOf("<",keyLocation); //Gets the location of the ending footer after the needed value
             String word = typingHTML.substring(keyLocation, endLocation); //Uses substring to get the value between the header index and footer index
             wordBank.add(word);
         }
         return wordBank;
     }
  
-    public int[] evaluate(ArrayList<String> typedWords, double elapsedTimeInSeconds)
+    //Calculate the word per minute and other stats
+    public int[] evaluate(ArrayList<String> typedWords, double elapsedTimeInSeconds) 
     {
         int wrongWords = 0;
         int wordsTyped = 0;
         double totalChar = 0;
-        final double avgChar = 3.5;
-        for(int i = 1; i < typedWords.size(); i++)
+        final double avgChar = 3.5; //This is the average char per word that will be used in calculations
+        
+        for(int i = 1; i < typedWords.size(); i++) //Loops through each typedWords with the actual text and compare 
         {
             if(typedWords.get(i).equals(wordBank.get(i)))
             {
                 wordsTyped++;
-                totalChar += typedWords.get(i).length();
-                System.out.println(totalChar);
+                totalChar += typedWords.get(i).length(); //Adds the total characters typed
             }
             else
             {
@@ -95,13 +99,15 @@ public class TenMonkeyTypes {
                 wordsTyped++;
             }
         }
+        
         int correctWords = wordsTyped - wrongWords;
-        System.out.println(totalChar);
-        int wpm = (int)(((totalChar/avgChar)/elapsedTimeInSeconds)*60);
-        int[] results = {wpm, wordsTyped, correctWords, wrongWords, (int)elapsedTimeInSeconds};
+        int wpm = (int)(((totalChar/avgChar)/elapsedTimeInSeconds)*60); //Total characters / avg Char to find avg words typed and divide by time to find word per sec and multiply to 60 to find per minute
+        int[] results = {wpm, wordsTyped, correctWords, wrongWords, (int)elapsedTimeInSeconds}; //Put all the stats into an array 
+        
         return results;
     }
 
+     //Gets the word count released on the website
     public int getWordCount(String website, String html)
     {
         String key = "<div class=\"pull-right\" style=\"text-align: right; border-right: 1px solid #ddd; padding-right: 10px;\">\n" +
@@ -113,60 +119,61 @@ public class TenMonkeyTypes {
         return words; 
     }
     
+    public String getRank(int wpm, int wrongWord) //Based on the WPM this gets the rank
+   {
+       String rank = "";
+       if(wpm >= 130 && wrongWord == 0)
+       {
+           rank = "Grand Master";
+       }
+       else if(wpm >= 110 && wrongWord <= 1)
+       {
+           rank = "Master";
+       }
+       else if(wpm >= 100 && wrongWord <= 2)
+       {
+           rank = "Diamond";
+       }
+       else if(wpm >= 90)
+       {
+           rank = "Platinum";
+       }
+       else if(wpm >= 80)
+       {
+           rank = "Gold II";
+       }
+       else if(wpm >= 70)
+       {
+           rank = "Gold I";
+       }
+       else if(wpm >= 60)
+       {
+           rank = "Silver III";
+       }
+       else if(wpm >= 50)
+       {
+           rank = "Silver II";
+       }
+       else if(wpm >= 40)
+       {
+           rank = "Silver I";
+       }
+       else if(wpm >= 35)
+       {
+           rank = "Bronze III";
+       }
+       else if(wpm >= 30)
+       {
+           rank = "Bronze II";
+       }
+       else 
+       {
+           rank = "Bronze I";
+       }
+       return rank;
+   }
     
-    
-    public String getTyperInfo(String website, String html)
-    {
-            html = download(website);
-            String header = "[0] => Array";
-            int foundAt = html.indexOf(header);
-            int endsAt = html.indexOf("[1]", foundAt);
-            String typerInfo = html.substring(foundAt, endsAt);
-            
-            return typerInfo;
-    }
-    
-    public static String getUsername(String typerInfo, String username)
-    {
-            //System.out.println(typerInfo);
-            String key1 = "[username] => ";
-            int usernameValue = typerInfo.indexOf(key1) + key1.length();
-            int peEnd = typerInfo.indexOf("[", usernameValue);
-            username = (typerInfo.substring(usernameValue, peEnd));
-            return username;
-    }
-    
-    public static String getLang(String typerInfo, String lang)
-    {
-           String key2 = "[typing_test_url] => /typing-test/";
-           int langValue = typerInfo.indexOf(key2) + key2.length();
-           int peEnd2 = typerInfo.indexOf("[", langValue);
-           lang = (typerInfo.substring(langValue, peEnd2));
-           return lang;
-    }
-     
-    public int getWPM(String typerInfo, int wpm)
-    {
-           String key3 = "[wpm] => ";
-           String wpmStr = Integer.toString(wpm);
-           int wpmValue = typerInfo.indexOf(key3) + key3.length();
-           int peEnd3 = typerInfo.indexOf(")", wpmValue);
-           wpmStr = (typerInfo.substring(wpmValue, peEnd3));
-           int wpmInt = Integer.parseInt(wpmStr.trim());
-           return wpmInt;
-    }
-          
-    public void print(String username, String lang, int wpm)
-    {
-         System.out.println(username.trim() + " is typing at " + wpm + " WPM in " + lang.trim());
-    }
-    
-    public String returnStuff(String username, String lang, int wpm)
-    {
-        return username.trim() + " is typing at " + wpm + " WPM in " + lang.trim();
-    }
-    
-    public String download(String website) 
+    public String download(String website) //using the url it downloads the website source code
     { 
         StringBuilder result = new StringBuilder(); 
         String line; 

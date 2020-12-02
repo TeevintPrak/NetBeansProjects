@@ -5,9 +5,6 @@
  */
 package apcs.webscrap;
 
-import static apcs.webscrap.TenMonkeyTypes.getLang;
-//import static apcs.webscrap.TenMonkeyTypes.getTyperInfo;
-import static apcs.webscrap.TenMonkeyTypes.getUsername;
 import java.awt.event.KeyEvent;
 import java.time.LocalTime;
 //import static apcs.webscrap.TenMonkeyTypes.getWPM;
@@ -29,7 +26,6 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -303,57 +299,64 @@ public class GUI extends javax.swing.JFrame {
 
     private void linkBoxKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_linkBoxKeyPressed
         
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) //Checks if enter key is pressed
         {
-            String text = linkBox.getText().trim();
-            String urlHTTP = "https://10fastfingers.com/";
-            if(!(text.equals(" ") || text.equals("")) && (text.contains(urlHTTP)))
+            String text = linkBox.getText().trim(); 
+            String urlHTTP = "https://10fastfingers.com/"; //For everything to work, the link must be from 10fastfingers
+            if(!(text.equals(" ") || text.equals("")) && (text.contains(urlHTTP))) 
             {
-                backEnd.resetWordBank();
-                typedWords.clear();
-                timer = false;
-                firstWord = false;
-                start = 0;
-                wordsDisplay.setText("");
-                backEnd.setUp(text);
-                String testingWords = backEnd.printWords();
-                wordCount = backEnd.getWordCount();
-                wordsDisplay.append(testingWords);
+                resetAllValues(); //Resets all value to prepare for a new session
+                wordsDisplay.setText(""); //Clears the text so a new one can be place
+                backEnd.setUp(text); //This will call the setUp to scrape and and organize the text into an ArrayList
+                String testingWords = backEnd.printWords(); //Prints the arrayList into String
+                wordsDisplay.append(testingWords); //appends it the String to text Area.
             }
         }
         
     }//GEN-LAST:event_linkBoxKeyPressed
    
+   private void resetAllValues()  //Resets all value to prepare for a new session
+   {    
+        backEnd.resetWordBank();
+        typedWords.clear();
+        startTime = 0;
+        timer = false;  //Restarts the timer
+        typedFirstWord = false; //Resets first word because it is not typed
+   }
+    
+   //Starts the timer to use for calculations
    private void startTimer()
    {
-       if(timer)
+       
+       if(timer) //Start timer only when timer == true so that it doesn't run forever
        {
-            start = 0;
-            start = LocalTime.now().toNanoOfDay();
-            System.out.println(Double.toString(start) + " is start time");
+            startTime = 0;
+            startTime = LocalTime.now().toNanoOfDay();
+            System.out.println(Double.toString(startTime) + " is start time");
        }
-       else if(!timer)
+       else if(!timer) //End timer only when timer == false so that we can tell to stop
         {
-            double end = 0;
-            end = LocalTime.now().toNanoOfDay();
-            System.out.println(Double.toString(end) + " is end time");
-            double elaspedTimeInSeconds = (end - start)/1000000000.0;
-            System.out.println(Double.toString(elaspedTimeInSeconds) + " is elaspedTime");
-            showResults(elaspedTimeInSeconds);
-            start = 0;
+            System.out.println("End timer.");
+            double end = LocalTime.now().toNanoOfDay();
+            System.out.println("End time = " + end);
+            double elaspedTimeInSeconds = (end - startTime)/1000000000.0; //calculate the elasped time by subtracting and dividing by 1 million to convert nano to sec.
+            System.out.println("elaspedTimeInSeconds");
             end = 0;
+            showResults(elaspedTimeInSeconds);
+            
         }
    }
    
-   private void showResults(double elaspedTimeInSeconds)
+    //Display the results in their specific box
+   private void showResults(double elaspedTimeInSeconds) //Display the results in their specific box
    {
-       int[] results = backEnd.evaluate(typedWords, elaspedTimeInSeconds);
+       int[] results = backEnd.evaluate(typedWords, elaspedTimeInSeconds); //Gets all the calculation as arrays because of all the multiple values
        int wpm = results[0];
        int totalWords = results[1];
        int correctWords = results[2];
        int wrongWords = results[3];
        int time = results[4];
-       String rank = getRank(wpm);
+       String rank = backEnd.getRank(wpm, wrongWords); //Measures rank of the typer based on their WPM
        
        wpmBox.setText(Integer.toString(wpm));
        totalWordsBox.setText(Integer.toString(totalWords));
@@ -364,100 +367,58 @@ public class GUI extends javax.swing.JFrame {
        
    }
    
-   private String getRank(int wpm)
-   {
-       String rank = "";
-       if(wpm >= 130)
-       {
-           rank = "Grand Master";
-       }
-       else if(wpm >= 110)
-       {
-           rank = "Master";
-       }
-       else if(wpm >= 100)
-       {
-           rank = "Diamond";
-       }
-       else if(wpm >= 90)
-       {
-           rank = "Platinum";
-       }
-       else if(wpm >= 80)
-       {
-           rank = "Gold II";
-       }
-       else if(wpm >= 70)
-       {
-           rank = "Gold I";
-       }
-       else if(wpm >= 60)
-       {
-           rank = "Silver III";
-       }
-       else if(wpm >= 50)
-       {
-           rank = "Silver II";
-       }
-       else if(wpm >= 40)
-       {
-           rank = "Silver I";
-       }
-       else if(wpm >= 35)
-       {
-           rank = "Bronze III";
-       }
-       else if(wpm >= 30)
-       {
-           rank = "Bronze II";
-       }
-       else 
-       {
-           rank = "Bronze I";
-       }
-       
-           
-       return rank;
-   }
+   
     
     private void typingAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_typingAreaKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_SPACE && !firstWord)
+        int wordCount = 0;    
+        wordCount = backEnd.getWordCount(); 
+        
+        //Check if the typer has typed clicked space and hasnt typed the first word
+        if(evt.getKeyCode() == KeyEvent.VK_SPACE && !typedFirstWord) 
         {
             timer = true;
-            startTimer();
-            System.out.println("Start timer");
-            firstWord = true;
+            startTimer(); //Starts the timer for when the first word is recorded
+            System.out.println("Start timer"); 
+            typedFirstWord = true;
         }
-        if(evt.getKeyCode() == KeyEvent.VK_SPACE)
+        
+        //Checks for the a space and input the word into an ArrayList
+        if(evt.getKeyCode() == KeyEvent.VK_SPACE) 
         {
             String typedWord = typingArea.getText().trim();
-            if(typedWords.size() == wordCount)
+            if(typedWords.size() == wordCount-1) //If the amount of words typed is one less then the text than record the last word and stop timer to prevent outOfBounds
             {
                 timer = false;
                 startTimer();
             }
-            if(!typingArea.getText().equals(""))
+            else if(!(typingArea.getText().equals("")&&typingArea.getText().equals(" "))) //Only records when ever there is a letter or word typed
             {
                 typedWords.add(typedWord);
             }
-            typingArea.setText("");
+            
+            typingArea.setText(""); //Clears the typing area for new word
         }
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        
+        //If typer clicks enter means they are done 
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) 
         {
             timer = false;
             startTimer();
         }
+        
     }//GEN-LAST:event_typingAreaKeyPressed
 
     /**
      * @param args the command line arguments
      */
+    
+    //Class variables, used by many functions 
     private ArrayList<String> typedWords = new ArrayList<String>();
-    private int wordCount = 0;    private boolean firstWord = false;
+    private boolean typedFirstWord = false;
     private boolean timer = false;
     private TenMonkeyTypes backEnd = new TenMonkeyTypes();
-    private double start = 0;
+    double startTime = 0;
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
